@@ -215,19 +215,18 @@ def calc_loss(data1, data2, p_onset, s_onset, sf=100):
     return np.mean(loss), p_snrs, s_snrs, p_ccs, s_ccs, n_ccs
 
 
-def evaluate(model, model_name):
+def evaluate(raw_dir, w_dir, model, model_name):
     total_loss = 0
 
     # Load pretrained denoising model
-    # default: sbm.DeepDenoiser.from_pretrained("original")
     model = model
 
     # Prepare data
-    raw_dir = '../data/Learning'
+    raw_dir = raw_dir
     files = sorted(os.listdir(raw_dir))
     # print(len(files))
 
-    filename = '../data/results_'+model_name+'.csv'
+    filename = w_dir+'/'+model_name+'.csv'
 
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -285,3 +284,18 @@ def evaluate(model, model_name):
             c += 1
 
     return total_loss/(len(files))
+
+
+def main():
+    raw_dir = '../data/Learning'
+    w_dir = '../data/results'
+
+    for dir in [raw_dir, w_dir]:
+        if os.path.isdir(dir):
+            pass
+        else:
+            os.mkdir(dir)
+
+
+if __name__ == '__main__':
+    main()
