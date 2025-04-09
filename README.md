@@ -18,3 +18,9 @@
 データの整形に使用するファイル.
 
 ## 手順
+1. 以下のコマンドを入力する.
+~~~
+pip3 install -r requirements.txt
+~~~
+
+2. data/Learning 内の各ファイルをダウンロードする.
