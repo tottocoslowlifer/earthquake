@@ -27,6 +27,3 @@ pip3 install -r requirements.txt
 2. `data/Learning` 内の各ファイルをダウンロードする.
 
 3. `scripts` 上で以下のコマンドを順に入力する.
-~~~
-python3 evaluate.py
-~~~
