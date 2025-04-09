@@ -223,7 +223,7 @@ def evaluate(model, model_name):
     files = sorted(os.listdir(raw_dir))
     # print(len(files))
 
-    filename = '../data/'+model_name+'_results.csv'
+    filename = '../data/results_'+model_name+'.csv'
 
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
@@ -247,7 +247,6 @@ def evaluate(model, model_name):
             time_str, station_name = os.path.basename(fn).replace(
                 '.npz', '').split('_')
 
-            # Create ObsPy Stream
             original_stream = convert_ndarry_stream(
                 wave-np.mean(wave, axis=1, keepdims=True), time_str,
                 station_name)
@@ -257,8 +256,8 @@ def evaluate(model, model_name):
                 original_stream, channel_order=["UD", "NS", "EW"])
             denoised = convert_stream_to_ndarray(
                 denoised_stream,
-                channel_order=["DeepDenoiser_UD", "DeepDenoiser_NS",
-                               "DeepDenoiser_EW"])
+                channel_order=[model_name+"_UD", model_name+"_NS",
+                               model_name+"_EW"])
 
             loss, p_snrs, s_snrs, p_ccs, s_ccs, n_ccs = calc_loss(
                 original, denoised, p_onset, s_onset)
