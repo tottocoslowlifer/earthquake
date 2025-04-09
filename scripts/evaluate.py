@@ -240,14 +240,14 @@ def evaluate(raw_dir, w_dir, model, model_name):
 
         c = 0
 
-        for fn in files:
+        for i in range(5):######
 
             if c % 100 == 0:
                 print(f'{c}/{len(files)}')
 
-            data = np.load('../data/Learning'+'/'+fn, allow_pickle=True)
+            data = np.load('../data/Learning'+'/'+files[i], allow_pickle=True) #####
             wave, p_onset, s_onset = data['wave'], data['pidx'], data['sidx']
-            time_str, station_name = os.path.basename(fn).replace(
+            time_str, station_name = os.path.basename(files[i]).replace( #####
                 '.npz', '').split('_')
 
             original_stream = convert_ndarry_stream(
@@ -270,7 +270,7 @@ def evaluate(raw_dir, w_dir, model, model_name):
             )
 
             writer.writerow([
-                os.path.basename(fn),
+                os.path.basename(files[i]), #####
                 loss,
                 p_snrs[0], s_snrs[0], p_ccs[0], s_ccs[0], n_ccs[0],
                 p_snrs[1], s_snrs[1], p_ccs[1], s_ccs[1], n_ccs[1],
@@ -296,4 +296,4 @@ def experiment(model, model_name):
         else:
             os.mkdir(dir)
 
-    evaluate(raw_dir, w_dir, model, model_name)
+    print(evaluate(raw_dir, w_dir, model, model_name))
