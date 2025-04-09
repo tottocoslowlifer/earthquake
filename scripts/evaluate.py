@@ -240,14 +240,14 @@ def evaluate(raw_dir, w_dir, model, model_name):
 
         c = 0
 
-        for i in range(4):
+        for fn in files:
 
             if c % 100 == 0:
                 print(f'{c}/{len(files)}')
 
-            data = np.load('../data/Learning'+'/'+files[i], allow_pickle=True) #####
+            data = np.load('../data/Learning'+'/'+fn, allow_pickle=True)
             wave, p_onset, s_onset = data['wave'], data['pidx'], data['sidx']
-            time_str, station_name = os.path.basename(files[i]).replace( #####
+            time_str, station_name = os.path.basename(fn).replace(
                 '.npz', ''
                 ).split('_')
 
@@ -271,7 +271,7 @@ def evaluate(raw_dir, w_dir, model, model_name):
             )
 
             writer.writerow([
-                os.path.basename(files[i]),
+                os.path.basename(fn),
                 loss,
                 p_snrs[0], s_snrs[0], p_ccs[0], s_ccs[0], n_ccs[0],
                 p_snrs[1], s_snrs[1], p_ccs[1], s_ccs[1], n_ccs[1],
