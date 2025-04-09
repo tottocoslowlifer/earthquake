@@ -286,7 +286,7 @@ def evaluate(raw_dir, w_dir, model, model_name):
     return total_loss/(len(files))
 
 
-def main():
+def experiment(model, model_name):
     raw_dir = '../data/Learning'
     w_dir = '../data/results'
 
@@ -296,6 +296,4 @@ def main():
         else:
             os.mkdir(dir)
 
-
-if __name__ == '__main__':
-    main()
+    evaluate(raw_dir, w_dir, model, model_name)
