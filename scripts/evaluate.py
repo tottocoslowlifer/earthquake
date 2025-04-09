@@ -296,4 +296,4 @@ def experiment(model, model_name):
         else:
             os.mkdir(dir)
 
-    print(evaluate(raw_dir, w_dir, model, model_name))
+    evaluate(raw_dir, w_dir, model, model_name)
