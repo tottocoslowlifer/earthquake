@@ -5,7 +5,6 @@ import csv
 
 
 def convert_ndarry_stream(data, time_str, station_name, sampling_rate=100):
-    print(f"time_str: {time_str}")
     """
     Convert a 2D NumPy array of waveform data into an ObsPy Stream object.
 
@@ -27,6 +26,15 @@ def convert_ndarry_stream(data, time_str, station_name, sampling_rate=100):
     stream : obspy.Stream
         ObsPy Stream object containing three Traces with appropriate metadata.
     """
+    try:
+        year = 2000 + int(time_str[:2])
+        month, day = int(time_str[2:4]), int(time_str[4:6])
+        hour, minute, second = int(time_str[7:9]), int(time_str[9:11]), int(time_str[11:13])
+    except Exception as e:
+        print(f"Error while processing time_str: '{time_str}'")
+        print(f"Error message: {e}")
+        raise
+
     year = 2000 + int(time_str[:2])
     month, day = int(time_str[2:4]), int(time_str[4:6])
     hour, minute, second = (
