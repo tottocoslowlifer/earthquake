@@ -283,7 +283,7 @@ def evaluate(raw_dir, w_dir, model, model_name):
 
             c += 1
 
-    return total_loss/(len(files))
+    print(total_loss/(len(files)))
 
 
 def experiment(model, model_name):
