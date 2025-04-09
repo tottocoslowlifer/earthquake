@@ -5,6 +5,7 @@ import csv
 
 
 def convert_ndarry_stream(data, time_str, station_name, sampling_rate=100):
+    print(f"time_str: {time_str}")
     """
     Convert a 2D NumPy array of waveform data into an ObsPy Stream object.
 
@@ -28,8 +29,11 @@ def convert_ndarry_stream(data, time_str, station_name, sampling_rate=100):
     """
     year = 2000 + int(time_str[:2])
     month, day = int(time_str[2:4]), int(time_str[4:6])
-    hour, minute, second = int(time_str[7:9]),
-    int(time_str[9:11]), int(time_str[11:13])
+    hour, minute, second = (
+        int(time_str[7:9]),
+        int(time_str[9:11]),
+        int(time_str[11:13])
+    )
     utc_time = UTCDateTime(year, month, day, hour, minute, second)
 
     channels = ["UD", "NS", "EW"]
@@ -256,17 +260,23 @@ def evaluate(model, model_name):
                 original_stream, channel_order=["UD", "NS", "EW"])
             denoised = convert_stream_to_ndarray(
                 denoised_stream,
-                channel_order=[model_name+"_UD", model_name+"_NS",
-                               model_name+"_EW"])
+                channel_order=[
+                    model_name+"_UD",
+                    model_name+"_NS",
+                    model_name+"_EW",
+                ])
 
             loss, p_snrs, s_snrs, p_ccs, s_ccs, n_ccs = calc_loss(
-                original, denoised, p_onset, s_onset)
+                original, denoised, p_onset, s_onset
+            )
 
-            writer.writerow([os.path.basename(fn), loss,
-                            p_snrs[0], s_snrs[0], p_ccs[0], s_ccs[0], n_ccs[0],
-                            p_snrs[1], s_snrs[1], p_ccs[1], s_ccs[1], n_ccs[1],
-                            p_snrs[2], s_snrs[2], p_ccs[2], s_ccs[2], n_ccs[2]]
-                            )
+            writer.writerow([
+                os.path.basename(fn),
+                loss,
+                p_snrs[0], s_snrs[0], p_ccs[0], s_ccs[0], n_ccs[0],
+                p_snrs[1], s_snrs[1], p_ccs[1], s_ccs[1], n_ccs[1],
+                p_snrs[2], s_snrs[2], p_ccs[2], s_ccs[2], n_ccs[2],
+            ])
 
             # print(os.path.basename(fn), loss, p_snr, s_snr, P_CC, s_cc, n_cc)
 
@@ -274,4 +284,4 @@ def evaluate(model, model_name):
 
             c += 1
 
-    return {total_loss/(len(files))}
+    return total_loss/(len(files))
