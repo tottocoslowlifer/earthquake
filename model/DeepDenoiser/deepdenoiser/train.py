@@ -198,7 +198,6 @@ def set_config(args, data_reader):
   config.kernel_size = args.kernel_size
   config.pool_size = args.pool_size
   config.dilation_rate = args.dilation_rate
-  print(config.dilation_rate)
   config.batch_size = args.batch_size
   config.class_weights = args.class_weights
   config.loss_type = args.loss_type
