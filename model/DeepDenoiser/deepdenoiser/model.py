@@ -2,7 +2,6 @@ import logging
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.layers import Conv2D
 
 from util import *
 
@@ -169,7 +168,7 @@ class UNet:
 
         with tf.compat.v1.variable_scope("Input"):
             net = self.X
-            net = Conv2D(
+            net = tf.compat.v1.layers.conv2d(
                 net,
                 filters=self.filters_root,
                 kernel_size=self.kernel_size,
