@@ -315,7 +315,7 @@ def train_fn(args, data_reader, data_reader_valid=None):
     sess.run(data_reader.queue.close(cancel_pending_enqueues=True))
     if data_reader_valid is not None:
       sess.run(data_reader_valid.queue.close(cancel_pending_enqueues=True))
-  return 0
+  return model, sess
 
 
 def test_fn(args, data_reader, figure_dir=None, result_dir=None):
@@ -522,7 +522,7 @@ def main(args):
       else:
         data_reader_valid = None
       logging.info("Dataset size: training %d, validation 0" %  (data_reader.n_signal))
-    train_fn(args, data_reader, data_reader_valid)
+    return train_fn(args, data_reader, data_reader_valid)
   
   elif args.mode == "valid" or args.mode == "test":
     with tf.compat.v1.name_scope('create_inputs'):
@@ -534,7 +534,7 @@ def main(args):
           queue_size=args.batch_size*2,
           coord=coord)
     logging.info("Dataset Size: {}".format(data_reader.n_signal))
-    test_fn(args, data_reader)
+    return test_fn(args, data_reader)
 
   elif args.mode == "pred":
     with tf.compat.v1.name_scope('create_inputs'):
@@ -543,11 +543,15 @@ def main(args):
           signal_list=args.data_list,
           sampling_rate=args.sampling_rate)
     logging.info("Dataset Size: {}".format(data_reader.n_signal))
-    pred_fn(args, data_reader, log_dir=args.output_dir)
+    return pred_fn(args, data_reader, log_dir=args.output_dir)
 
   else:
     print("mode should be: train, valid, test, debug or pred")
 
   coord.request_stop()
   coord.join()
-  return 0
+
+
+if __name__ == '__main__':
+  args = read_args()
+  main(args)

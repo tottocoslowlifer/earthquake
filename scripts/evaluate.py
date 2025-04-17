@@ -296,5 +296,5 @@ def experiment(model, model_name):
             pass
         else:
             os.mkdir(dir)
-
-    print(evaluate(raw_dir, w_dir, model, model_name))
+    loss = evaluate(raw_dir, w_dir, model, model_name)
+    print('Total Loss = {}'.format(loss))

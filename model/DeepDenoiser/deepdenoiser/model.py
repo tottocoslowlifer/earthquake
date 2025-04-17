@@ -2,6 +2,7 @@ import logging
 
 import numpy as np
 import tensorflow as tf
+from obspy import Stream
 
 from util import *
 
@@ -39,6 +40,35 @@ class ModelConfig:
     def update_args(self, args):
         for k, v in vars(args).items():
             setattr(self, k, v)
+
+
+class WrappedModel:
+    def __init__(self, model, sess, denoiser_name="DeepDenoiser"):
+        self.model = model
+        self.sess = sess
+        self.denoiser_name = denoiser_name
+
+    def annotate(self, stream: Stream) -> Stream:
+        traces = stream.traces
+        data = np.array([trace.data for trace in traces])
+
+        denoised_data = self.denoise(data)
+
+        denoised_traces = []
+        for i, trace in enumerate(traces):
+            denoised_trace = trace.copy()
+            denoised_trace.data = denoised_data[i]
+            channel_name = f"{self.denoiser_name}_{trace.stats.channel}"
+            denoised_trace.stats.channel = channel_name
+
+            denoised_traces.append(denoised_trace)
+
+        denoised_stream = Stream(traces=denoised_traces)
+        return denoised_stream
+
+    def denoise(self, data: np.ndarray) -> np.ndarray:
+        denoised_data = data
+        return denoised_data
 
 
 def crop_and_concat(net1, net2):
