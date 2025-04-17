@@ -84,9 +84,9 @@ def read_args():
 
   parser.add_argument("--dilation_rate",
                       nargs="+",
-                      type=tuple,
-                      default=(1, 1),
-                      help="dilation_rate (default: (1, 1)")
+                      type=int,
+                      default=[1, 1],
+                      help="dilation_rate (default: [1, 1]")
 
   parser.add_argument("--loss_type",
                       default="cross_entropy",
@@ -198,6 +198,7 @@ def set_config(args, data_reader):
   config.kernel_size = args.kernel_size
   config.pool_size = args.pool_size
   config.dilation_rate = args.dilation_rate
+  print(config.dilation_rate)
   config.batch_size = args.batch_size
   config.class_weights = args.class_weights
   config.loss_type = args.loss_type
