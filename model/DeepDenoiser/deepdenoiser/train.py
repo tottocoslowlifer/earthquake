@@ -84,9 +84,9 @@ def read_args():
 
   parser.add_argument("--dilation_rate",
                       nargs="+",
-                      type=int,
-                      default=[1, 1],
-                      help="dilation_rate (default: [1, 1]")
+                      type=tuple,
+                      default=(1, 1),
+                      help="dilation_rate (default: (1, 1)")
 
   parser.add_argument("--loss_type",
                       default="cross_entropy",
@@ -551,7 +551,3 @@ def main(args):
   coord.request_stop()
   coord.join()
   return 0
-
-if __name__ == '__main__':
-  args = read_args()
-  main(args)
